@@ -1,0 +1,216 @@
+-- exercicio mysql e procedures
+-- slide base pode ser obtido em
+-- https://www.scriptbrasil.com.br/download/apostila/794/
+
+/* select version(); 
+-- verificar versao*/
+
+/*create TABLE empresas (
+codigo integer auto_increment,
+nome varchar (50),
+primary key(codigo)) engine=innodb;
+
+create table pessoas (
+codigo INTEGER auto_increment,
+nome varchar (50),
+empresa integer,
+salario real,
+primary key(codigo),
+foreign KEY(empresa) REFERENCES empresas(codigo));*/
+
+/*insert into empresas (nome) values ('Solis'),
+('Unisinos'),('Univates'),('Governo FEDERAL');
+
+INSERT INTO pessoas (nome, empresa, salario)
+VALUES ('Nasair Silva',1,100),('Joice',1,200),
+('Daniel',1,300),('Leonardo',2,400),
+('Andrea','2',500),('Cesar',3,600),('Viviane',3,700),
+('Roberto Jefferson',4,3000),('Luis Inacio',4,5000);*/
+
+/*select avg(salario)from pessoas;
+
+select empresa, avg(salario)
+from pessoas
+group by empresa;*/
+
+/*SELECT sum(salario) FROM pessoas;
+
+SELECT empresa, sum(salario) FROM
+pessoas GROUP BY empresa;*/
+
+/*-- stored procedures podem listar dados
+-- crie uma procedure para listar todas as pessoas
+create PROCEDURE pessoas () SELECT * from pessoas;
+
+call pessoas;
+
+-- crie uma procedure para listar todas as empresas
+create procedure empresas () select * from empresas
+
+call empresas;*/
+
+/*-- podem alterar dados
+create PROCEDURE apagaPessoas ()
+delete from pessoas;
+
+call apagaPessoas();
+
+call pessoas(); -- tabela est? vazia*/
+
+/*-- podem inserir dados
+create PROCEDURE inserePessoas () insert into pessoas (nome, empresa, salario) 
+VALUES ('Nasair Silva', 1, 100),('Joice',1 ,200),
+('Daniel',1,300),('Leonardo',2,400),('Andrea','2',500),
+('Cesar',3,600),('Viviane',3,700),('Roberto Jefferson',4,3000),('Luis Inacio',4,5000);
+call inserePessoas();*/
+
+/* -- pode criar procedimentos de sistema
+create PROCEDURE p1 ()
+  language sql
+  not deterministic
+  sql security definer
+  comment 'este ? um procedimento'
+  select current_date;
+  
+  call p1 ();
+  
+-- crie um procedimento que exiba a data e hora(timestamp) atual
+
+create procedure dataEhora() SELECT current_timestamp;
+call dataEhora()*/
+
+/*Parenteses  ap?s nome do procedimento delimitam os par?metros
+
+Par?metros de entrada: IN
+Par?metros de sa?da: OUT
+Par?metros entrada e sa?da: INOUT*/
+
+/* -- parametros
+-- paramatros de entrada
+select @x;
+
+create PROCEDURE setaX (in aux int) set @x=aux;
+
+call setaX (4);
+
+-- parametros de saida
+select @x;
+
+create PROCEDURE recebeX (out aux int) set aux=5;
+
+call recebeX(@x);
+
+select @x;*/
+
+/*-- bloco de funcoes
+create PROCEDURE p7 ()
+  begin
+    set @a = 5;
+    set @b = 5;
+    if @a>@b then
+      select 'A eh maior que B';
+    else 
+      select 'A nao eh maior que B';
+    end if;
+    end;
+    
+    call p7();*/
+  
+/*-- escopo de variaveis
+create PROCEDURE p11()
+  begin
+    declare x1 char(5) DEFAULT 'outer';
+    begin
+      declare x1 char(5) default 'inner';
+      select x1;
+    end;
+    select x1;
+  end;
+ 
+  call p11();*/
+  
+/*-- condicional
+create PROCEDURE p12 (in parametro INT)
+  begin
+    if parametro = 0 then
+      select '? igual a zero!';
+    else
+      select '? diferente de zero!';
+    end if;
+  end;
+  
+  call p12();*/
+  
+/*-- condicional com case
+create PROCEDURE p13 (in parametro integer)
+  begin
+    case parametro
+      when 0 then SELECT 'zero';
+      when 1 then select 'um';
+      else select 'N?o ? zero nem um';
+    end case;
+  end;
+  
+  call p13(1);
+  call p13(2);
+  call p13(0);*/
+  
+/*-- Condicional exercicio (muito bom)
+-- Crie uma procedure que diga se um numero eh par ou impar.
+create PROCEDURE parOuImpar (in parametro int)
+  begin
+    if parametro % 2 = 0 then
+      select 'o numero eh par!';
+    else
+      select 'o numero eh impar!';
+    end if;
+  end;
+
+  call parOuImpar(85);*/
+  
+/*-- Condicional com case exercicio (muito bom)
+-- Crie um procedimento que exiba o nome do mes, de acordo com o n?mero
+create PROCEDURE numeroDoMes (IN parametro int)
+  begin
+    case parametro 
+      when 1 then select 'JANEIRO';
+      when 2 then select 'FEVEREIRO';
+      when 3 then select 'MAR?O';
+      when 4 then select 'ABRIL';
+      when 5 then select 'MAIO';
+      when 6 then select 'JUNHO';
+      when 7 then select 'JULHO';
+      when 8 then select 'AGOSTO';
+      when 9 then select 'SETEMBRO';
+      when 10 then select 'OUTUBRO';
+      when 11 then select 'NOVEMBRO';
+      when 12 then select 'DEZEMBRO';
+    else 
+      select 'Numero incorreto do m?s';
+    end case;
+  end;
+  
+call numeroDoMes(10);*/
+
+/*-- laços de repetição - while
+create PROCEDURE p14 (in parametro integer)
+  begin
+    while parametro >=0 DO
+      insert into t VALUES (parametro);
+      set parametro = parametro - 1;
+    end while;
+  end;
+call p14 (2);*/
+
+/*-- laço de repeticao - repeat
+
+create procedure repetir (in parametro integer)
+  begin
+    repeat
+      select parametro;
+      set parametro = parametro + 1;
+      until parametro >=10
+    end repeat;
+  end;
+  
+  call repetir (3);*/
