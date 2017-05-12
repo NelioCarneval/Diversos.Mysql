@@ -214,3 +214,29 @@ create procedure repetir (in parametro integer)
   end;
   
   call repetir (3);*/
+
+/*-- laco de repeticao - loop
+create procedure loop1 (in parametro int)
+begin
+  loop_label: LOOP
+    select parametro;
+    set parametro = parametro + 1;
+    if parametro >=10 then
+      leave loop_label;
+    end if;
+  end loop;
+end;*/
+
+create PROCEDURE lacos_e_estrutura (in parametro int)
+begin
+  primeiro_loop: LOOP 
+  set parametro = parametro + 1;
+    if parametro<= 3 then
+      iterate primeiro_loop;
+    end if;
+    if parametro >=5 then
+      leave primeiro_loop;
+    end if;
+    select parametro;
+  end LOOP;
+end;
